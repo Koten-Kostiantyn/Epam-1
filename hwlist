@@ -1,5 +1,7 @@
 #!/bin/bash
 # sh hw ~/data ~/bkp
-client="192.168.197.131"
+client1="192.168.197.131"
+client2="192.168.197.129"
 server="192.168.197.128"
-sh ~/Desktop/hw $1 $2 $client
+sh ~/Desktop/hw $1 $2 $client1
+sh ~/Desktop/hw $1 $2 $client2
