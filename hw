@@ -1,0 +1,7 @@
+#!/bin/bash
+client=$3
+ssh kote@$client sh ~/Desktop/hwk $1
+sshfs kote@$client:/home/kote/Desktop ~/shfs 2>/dev/null
+diff ~/temp/data ~/shfs/data
+date=`date "+%Y-%m-%dT%H:%M:%S"`
+mv ~/temp/data ~/bkp/data-$date
