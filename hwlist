@@ -1,0 +1,5 @@
+#!/bin/bash
+# sh hw ~/data ~/bkp
+client="192.168.197.131"
+server="192.168.197.128"
+sh ~/Desktop/hw $1 $2 $client
