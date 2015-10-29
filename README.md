@@ -1,2 +1,2 @@
-# awk_task
-qwe
+awk -f awk sensors readings
+
