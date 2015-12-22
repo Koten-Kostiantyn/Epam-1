@@ -1,0 +1,57 @@
+sudo su
+yum install httpd
+httpd
+yum install mariadb-server mariadb
+systemctl start mariadb
+mysql_secure_installation
+/* now set password for mariaDB*/
+systemctl enable mariadb.service
+yum install php php-mysql
+kill -9 httpd
+httpd
+yum install php-fpm
+sudo firewall-cmd --permanent --zone=public --add-service=http 
+sudo firewall-cmd --permanent --zone=public --add-service=https
+sudo firewall-cmd --reload
+mysql -u root -p
+/* now enter password for mariaDB*/
+CREATE DATABASE wordpress;
+CREATE USER wordpressuser@localhost IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON wordpress.* TO wordpressuser@localhost IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON *.* TO 'wordpressuser'@'192.168.157.%' IDENTIFIED BY 'password' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+exit;
+yum install php-gd
+kill -9 httpd
+httpd
+cd /home/%username%/
+wget http://wordpress.org/latest.tar.gz
+tar xzvf latest.tar.gz
+sudo rsync -avP /home/%username%/wordpress/ /var/www/html/
+mkdir /var/www/html/wp-content/uploads
+sudo chown -R apache:apache /var/www/html/*
+cd /var/www/html
+cp wp-config-sample.php wp-config.php
+nano wp-config.php
+          define('DB_NAME', 'wordpress');
+          define('DB_USER', 'wordpressuser');
+          define('DB_PASSWORD', 'password');
+/*web install*/
+// yum install epel-release --installation phpMyAdmin to configure WordPress ip adress
+// yum install phpmyadmin
+// nano /etc/httpd/conf.d/phpMyAdmin.conf
+// kill -9 httpd
+// httpd
+/* go: http://localhost/phpmyadmin  
+Server: localhost »Database: wordpress »Table: wp_options
+change "siteurl", "home" to your ip adress, or by web interface interface in wordpress */
+/* Clone VirtualMachine1 to VM2
+VM2: change VM2 network adapter MAC adress 
+VM2: start VM2, login */
+VM2: sudo su
+VM2: nano /var/www/html/wp-config.php
+VM2:          define('WP_HOME','http://192.168.157.145/'); --VM2 local IP
+VM2:          define('WP_SITEURL','http://192.168.157.145/'); 
+VM2:          define('DB_HOST', '192.168.157.131'); --MariaDB local IP
+VM2: httpd
+
