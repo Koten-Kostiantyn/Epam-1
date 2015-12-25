@@ -11,3 +11,4 @@ iptables -P OUTPUT ACCEPT
 iptables -A INPUT -m limit --limit 2/s -s 0.0.0.0/0 -j ACCEPT
 iptables -A FORWARD -m limit --limit 2/s -s 0.0.0.0/0 -j ACCEPT
 /sbin/service iptables save
+echo "iptables: done"
