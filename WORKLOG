@@ -1,0 +1,18 @@
+sudo adduser admin
+sudo adduser hacker
+sudo adduser admin sudo
+sudo adduser hacker sudo
+sudo su
+apt-get -y install mariadb-server mariadb-client
+mysql -u root -p
+exit
+apt-get -y install apache2
+apt-get -y install php5 libapache2-mod-php5
+apt-get install nano
+nano /var/www/html/info.php
+<?php
+phpinfo();
+?>
+^X
+/etc/init.d/apache2 restart
+apt-get install php5 libapache2-mod-php5 libapache2-mod-auth-mysql php5-mysql imagemagick
