@@ -15,4 +15,5 @@ if ($result->num_rows > 0) {
     echo "0 results";
 }
 $connection->close();
+echo 'Hello, I am tired!'
 ?>
