@@ -9,7 +9,7 @@ $sql = "SELECT * FROM main";
 $result = $connection->query($sql);
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
-         echo "Hello, " . $row["keyword"]. "<br> current build is <font color="red">build#</font>";
+         echo "Hello, " . $row["keyword"]. "<br> current build is build#";
     }
 } else {
     echo "0 results";
