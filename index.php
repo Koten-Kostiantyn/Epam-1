@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html>
+<body>
 <?php
 // Create connection
 $connection = new mysqli(localhost, admin, admin, main);
@@ -16,3 +19,6 @@ if ($result->num_rows > 0) {
 }
 $connection->close();
 ?>
+<font color="red">build#</font>
+</body>
+</html>
