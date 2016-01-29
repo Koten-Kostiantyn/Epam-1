@@ -34,6 +34,7 @@ chmod 777 -R /var/www/html/
 //cp /var/lib/jenkins/jobs/DeployCODE/workspace/index.php /var/www/html
 //add index.php
 //conf. jenkins:   sed -i "s/build#/<font color="green">${BUILD_NUMBER}<\/font>/" /var/www/html/index.php
+//https://habrahabr.ru/post/268509/
  sudo chmod 777 -R /var/lib/jenkins/jobs/DeployCODE/
 //add index.html and chmod 777 index
 ~DO HACKING SCRIPT!~
