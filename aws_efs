@@ -1,26 +1,29 @@
-class efs ($AZ, $EFS, $mount)
+class efs ($EFS, $mount = '~/efs', $AZ = 'us-west-2')
+# AZ - global availability zone for our EFS, currently only us-west-2 is avaliable, so it will be used by default
+# EFS - name of Elastic File System
+# mount - mount point in our node, ~/efs by default
 
-if ami,rhel,centos
-package { nfs-utils
-ensure => installed
-}
-if ubuntu
-package { nfs-common
-ensure => installed
-}
-
-if EFS !=0
-AZ default => us-west-2
-
-mount default => efs
-file {mount
-ensure is dir
-ensure present}
-
-exec {
-sudo mount -t nfs4 $(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone).$EFS.efs.$AZ.amazonaws.com:/ $mount
+case $operatingsystem {
+  'RedHat', 'CentOS', 'Amazon': { package {"nfs-utils": ensure => installed, } }
+  /^(Debian|Ubuntu)$/:{ package {"nfs-common": ensure => installed, } }
+  default:            { err("Sorry, your OS ${::operatingsystem} is not supported") }
 }
 
-file { mount
-rights => 700
+#if EFS !=0
+
+file {"$mount"
+ensure => directory
+}->
+ mount { "efs":
+        device => "$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone).$EFS.efs.$AZ.amazonaws.com",
+        name   => "$mount",
+        ensure => mounted,
+        fstype => nfs4,
+#        options => 'auto,tcp,rw,soft,rsize=32768,wsize=32768,lock',
+        require => File["$mount"],
 }
+
+# exec {
+# sudo mount -t nfs4 $(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone).$EFS.efs.$AZ.amazonaws.com:/ $mount
+# }
+
