@@ -1,0 +1,26 @@
+class efs ($AZ, $EFS, $mount)
+
+if ami,rhel,centos
+package { nfs-utils
+ensure => installed
+}
+if ubuntu
+package { nfs-common
+ensure => installed
+}
+
+if EFS !=0
+AZ default => us-west-2
+
+mount default => efs
+file {mount
+ensure is dir
+ensure present}
+
+exec {
+sudo mount -t nfs4 $(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone).$EFS.efs.$AZ.amazonaws.com:/ $mount
+}
+
+file { mount
+rights => 700
+}
