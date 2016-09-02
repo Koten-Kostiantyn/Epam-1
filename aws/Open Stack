@@ -1,0 +1,33 @@
+http://blog.zymr.com/6-easy-ways-to-start-working-on-openstack-for-custom-development
+http://sdnnfv.net/uploads/3/5/2/4/3524709/bedrock_centos7_os_kvm_v1.pdf /packstack
+http://docs.openstack.org/ops/ 
+рутрекер ОС ессеншлз\
+https://www.rdoproject.org/install/quickstart/ /packstack
+
+egrep -c '(vmx|svm)' /proc/cpuinfo
+
+
+http://docs.openstack.org/developer/devstack/
+https://wiki.openstack.org/wiki/DevStack
+http://docs.openstack.org/icehouse/training-guides/content/building-training-cluster.html
+
+
+http://www.server-world.info/en/note?os=Ubuntu_14.04&p=openstack_icehouse&f=7
+
+
+
+https://www.mirantis.com/blog/openstack-user-tip-add-new-image-openstack/
+Название образа
+Тип
+Статус
+Публичный
+Защищенный
+Формат
+Размер
+Действия
+
+CentOS-7-x86_64-GenericCloud-1511
+образ	Активный	Да	Нет	QCOW2	858,2 МБ	
+	
+fedora23
+образ	Активный	Да	Нет	QCOW2	223,5 МБ
