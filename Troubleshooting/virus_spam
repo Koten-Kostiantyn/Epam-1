@@ -1,0 +1,17 @@
+#!/bin/bash
+a="0"
+while [ $a -lt 3 ]
+do
+i="0"
+while [ $i -lt 4 ]
+do
+echo "You " > /dev/pts/$i
+echo " have " > /dev/pts/$i
+echo "   " > /dev/pts/$i
+echo "    been " > /dev/pts/$i
+echo "    hacked!!!" > /dev/pts/$i
+i=$[$i+1]
+done
+a=$[$a+1]
+sleep 15
+done

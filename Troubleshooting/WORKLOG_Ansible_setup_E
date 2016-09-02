@@ -1,0 +1,29 @@
+#configure 2 CentOS instances with network and ssh with keys in it. 1 - ansible server 2 - ansible slave
+sudo su
+adduser admin # 1 && 2
+paswwd admin  # 1 && 2
+visudo or gpasswd -a admin wheel #12
+#maybe that was usless /\
+#                      ||
+mkdir ansible-apache #1
+cd ansible-apache/
+nano ansible.cfg
+[defaults]
+hostfile = hosts
+nano hosts
+[apache]
+192.168.157.143 ansible_ssh_user=root
+sudo rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
+yum install ansible
+ssh-keygen -t rsa #12
+ssh-copy-id root@192.168.157.143
+ansible apache -m ping #1
+nano apache.yml
+---
+- hosts: apache
+  sudo: yes
+  tasks:
+    - name: install httpd
+      yum: name=httpd update_cache=yes state=latest
+ansible-playbook apache.yml --ask-sudo-pass
+
