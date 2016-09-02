@@ -1,8 +1,0 @@
-#!/bin/bash
-# sh hw ~/data ~/bkp typical script test
-# https://beget.ru/articles/ssh_by_key how-to ssh via rsa
-client1="192.168.197.131"
-client2="192.168.197.129"
-server="192.168.197.128"
-sh ~/Desktop/hw $1 $2 $client1
-sh ~/Desktop/hw $1 $2 $client2

@@ -1,9 +1,0 @@
-#!/bin/bash
-client=$3
-ssh kote@$client sh ~/Desktop/hwk $1                >>~/Desktop/hw.log
-mkdir ~/shfs/shfs$client                                   2>/dev/null
-sshfs kote@$client:/home/kote/Desktop ~/shfs/shfs$client   2>/dev/null
-diff ~/temp/data ~/shfs/shfs$client/data            >>~/Desktop/hw.log
-date=`date "+%Y-%m-%dT%H:%M:%S"`
-mv ~/temp/data ~/bkp/d$client-$date                 >>~/Desktop/hw.log
-echo $3-done 	                                      >>~/Desktop/hw.log
