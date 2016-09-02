@@ -1,0 +1,5 @@
+#!/bin/bash
+cd ~/Desktop
+tar -cf data $1 --absolute-names
+echo "start scp"
+timeout 5m scp ~/Desktop/data  kote@192.168.197.128:~/temp
