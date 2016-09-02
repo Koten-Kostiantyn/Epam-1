@@ -1,3 +1,5 @@
+# This is puppet module for auto mounting EFS
+
 class efs ($EFS, $mount = '~/efs', $AZ = 'us-west-2')
 # AZ - global availability zone for our EFS, currently only us-west-2 is avaliable, so it will be used by default
 # EFS - name of Elastic File System
