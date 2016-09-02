@@ -1,0 +1,18 @@
+sudo nano /etc/yum.repos.d/nginx.repo
+      [nginx]
+      name=nginx repo
+      baseurl=http://nginx.org/packages/mainline/centos/$releasever/$basearch/
+      gpgcheck=0
+      enabled=1
+sudo yum install nginx //or update
+
+/* Install from sources */
+/* first you need to install it by yum*/
+nginx -V //copy this text
+cd %any folder%
+wget http://nginx.org/download/nginx-1.9.9.tar.gz //or any else
+tar xzvf nginx-1.9.9.tar.gz
+cd /nginx-1.9.9
+sudo ./configure %insert config from nginx -V% %add modules%
+sudo make
+sudo make install
